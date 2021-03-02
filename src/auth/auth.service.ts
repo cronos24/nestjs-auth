@@ -33,15 +33,13 @@ export class AuthService {
          
     
         if (!found) {
-          //throw new NotFoundException('Email or password incorrect')
-          throw Error('Email or password incorrect');
+          throw new NotFoundException('Email or password incorrect');
         }
     
         const passwordValid = await bcryptjs.compare(input.password, found.password);
-        //const passwordValid = await AuthHelper.validate(input.password, found.password)
     
         if (!passwordValid) {
-            throw Error('Email or password incorrect');
+            throw new NotFoundException('Email or password incorrect');
         }
 
         const jwt = this.jwt.sign({ id: found.id });
@@ -51,7 +49,7 @@ export class AuthService {
       }
 
     public async register(input: SignUpInputDto, res): Promise<UserToken> {
-    // Make sure that we have user with that email already
+
     const found = await this.prisma.user.findUnique({ 
         where: {
             email: input.email,
