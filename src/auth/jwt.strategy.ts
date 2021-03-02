@@ -28,6 +28,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
     return user;
 
+    //quede en la parte de los  auth
+
     //return this.authService.validate(payload);
   }
 }
