@@ -4,6 +4,7 @@ import { GraphqlOptions } from './graphql.options';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_PIPE } from '@nestjs/core';
+import { PostModule } from './modules/post/post.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { APP_PIPE } from '@nestjs/core';
     }),
     PrismaModule,
     AuthModule,
+    PostModule,
   ],
   controllers: [],
   providers: [

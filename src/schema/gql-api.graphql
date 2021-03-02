@@ -8,7 +8,7 @@ type Post {
   id: ID!
   title: String!
   body: String
-  author: User!
+  author: User
 }
 
 input SignUpInput {
@@ -23,7 +23,8 @@ input LoginInput {
 
 input PostInput {
   title: String!
-  body: String
+  body: String!
+  authorEmail: String!
 }
 
 type AuthPayload {
@@ -36,6 +37,10 @@ type UserToken {
   user: User!
 }
 
+type PostModel {
+  post: Post!
+}
+
 type Query {
   post(id: ID!): Post!
   posts: [Post!]!
@@ -44,5 +49,5 @@ type Query {
 type Mutation {
   signup(input: SignUpInput): UserToken!
   login(input: LoginInput): UserToken!
-  createPost(postInput: PostInput): Post!
+  createPost(input: PostInput): Post!
 }

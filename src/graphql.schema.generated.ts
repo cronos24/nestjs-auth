@@ -18,7 +18,8 @@ export class LoginInput {
 
 export class PostInput {
     title: string;
-    body?: string;
+    body: string;
+    authorEmail: string;
 }
 
 export class User {
@@ -31,7 +32,7 @@ export class Post {
     id: string;
     title: string;
     body?: string;
-    author: User;
+    author?: User;
 }
 
 export class AuthPayload {
@@ -42,6 +43,10 @@ export class AuthPayload {
 export class UserToken {
     token: string;
     user: User;
+}
+
+export class PostModel {
+    post: Post;
 }
 
 export abstract class IQuery {
@@ -55,5 +60,5 @@ export abstract class IMutation {
 
     abstract login(input?: LoginInput): UserToken | Promise<UserToken>;
 
-    abstract createPost(postInput?: PostInput): Post | Promise<Post>;
+    abstract createPost(input?: PostInput): Post | Promise<Post>;
 }

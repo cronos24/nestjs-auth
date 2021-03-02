@@ -24,7 +24,6 @@ export class AuthService {
 
     public async login(input: SignUpInputDto, res): Promise<UserToken> {
 
-
         const found = await this.prisma.user.findUnique({ 
             where: {
                 email: input.email,
