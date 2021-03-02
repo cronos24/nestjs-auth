@@ -2,8 +2,6 @@ type User {
   id: ID!
   email: String!
   post: [Post!]!
-  createdAt: String!
-  updatedAt: String!
 }
 
 type Post {
@@ -33,13 +31,18 @@ type AuthPayload {
   email: String!
 }
 
+type UserToken {
+  token: String!
+  user: User!
+}
+
 type Query {
   post(id: ID!): Post!
   posts: [Post!]!
 }
 
 type Mutation {
-  signup(signUpInput: SignUpInput): AuthPayload!
-  login(loginInput: LoginInput): AuthPayload!
+  signup(input: SignUpInput): UserToken!
+  login(input: LoginInput): UserToken!
   createPost(postInput: PostInput): Post!
 }

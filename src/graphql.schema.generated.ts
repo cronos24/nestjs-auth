@@ -25,8 +25,6 @@ export class User {
     id: string;
     email: string;
     post: Post[];
-    createdAt: string;
-    updatedAt: string;
 }
 
 export class Post {
@@ -41,6 +39,11 @@ export class AuthPayload {
     email: string;
 }
 
+export class UserToken {
+    token: string;
+    user: User;
+}
+
 export abstract class IQuery {
     abstract post(id: string): Post | Promise<Post>;
 
@@ -48,9 +51,9 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
-    abstract signup(signUpInput?: SignUpInput): AuthPayload | Promise<AuthPayload>;
+    abstract signup(input?: SignUpInput): UserToken | Promise<UserToken>;
 
-    abstract login(loginInput?: LoginInput): AuthPayload | Promise<AuthPayload>;
+    abstract login(input?: LoginInput): UserToken | Promise<UserToken>;
 
     abstract createPost(postInput?: PostInput): Post | Promise<Post>;
 }

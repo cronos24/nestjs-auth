@@ -2,7 +2,7 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -10,14 +10,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
 model User {
   id    Int     @default(autoincrement()) @id
   email String?  @unique
   password String?
   posts Post[]
-  createdAt DateTime? 
-  updatedAt DateTime?
 }
 
 model Post {
@@ -26,9 +23,4 @@ model Post {
     body String
     author    User?    @relation(fields: [authorId], references: [id])
     authorId  Int?
-    createdAt DateTime? 
-    updatedAt DateTime?
 }
-
-
-

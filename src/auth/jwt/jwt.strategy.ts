@@ -2,7 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { Request } from 'express';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
+import { User } from '@prisma/client';
 
 const cookieExtractor = (req: Request): string | null => {
   let token = null;
@@ -21,15 +22,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload): Promise<any> {
+  async validate(payload): Promise<User> {
     const user = await this.authService.validate(payload);
     if (!user) {
       throw new UnauthorizedException();
     }
     return user;
 
-    //quede en la parte de los  auth
-
-    //return this.authService.validate(payload);
   }
 }
