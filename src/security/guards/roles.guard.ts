@@ -27,7 +27,7 @@ export class RolesGuard implements CanActivate {
     var cont= 0;
 
     if (!roles) {
-        throw Error('No se encontraron roles');
+        return false;
     }
 
     for (var roll of roles) {
@@ -35,8 +35,9 @@ export class RolesGuard implements CanActivate {
         var rutasbyroll= await this.getRutasByRoll(roll.rolId);
 
         if (!rutasbyroll) {
-            throw Error('No se encontraron rutas asociadas al roll');
+            return false;
         }
+        
         
         for (const _rutas of rutasbyroll) {
             if (_rutas.rutas.ruta === final_route) {
@@ -60,7 +61,8 @@ export class RolesGuard implements CanActivate {
     async getRolesByUser(id: any): Promise<any> {
         const roles= await this.prisma.user_roles.findMany({ 
             where: {
-                userId: id
+                userId: id,
+                state: 1
             },
         });       
         
@@ -72,7 +74,8 @@ export class RolesGuard implements CanActivate {
     async getRutasByRoll(id: any): Promise<any> {
         const rutas= await this.prisma.rutas_roles.findMany({ 
             where: {
-                rolId: id
+                rolId: id,
+                state: 1
               },
               select: {
                 rutas: {
