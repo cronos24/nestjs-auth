@@ -4,6 +4,33 @@ type User {
   post: [Post!]!
 }
 
+type Roles {
+  id: ID!
+  name: String!
+  description: String
+  state: Int!
+}
+
+type UserRoles {
+  id: ID!
+  usuario: User!
+  perfil: Roles!
+  state: Int!
+}
+
+type Ruta {
+  id: ID!
+  ruta: String!
+  state: Int!
+}
+
+type RutasRoles {
+  id: ID!
+  rutas: Ruta!
+  perfil: Roles!
+  state: Int!
+}
+
 type Post {
   id: ID!
   title: String!
@@ -25,6 +52,18 @@ input PostInput {
   title: String!
   body: String!
   authorEmail: String!
+}
+
+input RolInput {
+  name: String!
+  description: String!
+  state: Int!
+}
+
+input UserRolInput {
+  authorEmail: String!
+  rolName: String!
+  state: Int!
 }
 
 type AuthPayload {
@@ -50,4 +89,5 @@ type Mutation {
   signup(input: SignUpInput): UserToken!
   login(input: LoginInput): UserToken!
   createPost(input: PostInput): Post!
+  createRol(input: RolInput): Roles!
 }

@@ -22,10 +22,49 @@ export class PostInput {
     authorEmail: string;
 }
 
+export class RolInput {
+    name: string;
+    description: string;
+    state: number;
+}
+
+export class UserRolInput {
+    authorEmail: string;
+    rolName: string;
+    state: number;
+}
+
 export class User {
     id: string;
     email: string;
     post: Post[];
+}
+
+export class Roles {
+    id: string;
+    name: string;
+    description?: string;
+    state: number;
+}
+
+export class UserRoles {
+    id: string;
+    usuario: User;
+    perfil: Roles;
+    state: number;
+}
+
+export class Ruta {
+    id: string;
+    ruta: string;
+    state: number;
+}
+
+export class RutasRoles {
+    id: string;
+    rutas: Ruta;
+    perfil: Roles;
+    state: number;
 }
 
 export class Post {
@@ -61,4 +100,6 @@ export abstract class IMutation {
     abstract login(input?: LoginInput): UserToken | Promise<UserToken>;
 
     abstract createPost(input?: PostInput): Post | Promise<Post>;
+
+    abstract createRol(input?: RolInput): Roles | Promise<Roles>;
 }

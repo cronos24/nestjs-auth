@@ -1,5 +1,5 @@
 import { IsEmail, MinLength } from 'class-validator';
-import { SignUpInput } from '../../graphql.schema.generated';
+import { SignUpInput } from '../../../graphql.schema.generated';
 
 export class SignUpInputDto extends SignUpInput {
   @IsEmail()

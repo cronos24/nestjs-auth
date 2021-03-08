@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
-import { LoginInput } from '../graphql.schema.generated';
+import { LoginInput } from '../../graphql.schema.generated';
 import { AuthService } from './auth.service'
 import { UserToken } from './models/user-token';
 
@@ -16,6 +16,11 @@ export class AuthResolver {
   login(@Args({ name: 'input', type: () => LoginInput }) input: LoginInput, @Context('res') res: Response) {
     return  this.service.login(input, res)  
   }
+
+  // @Mutation()
+  // profile(@Args({ name: 'input', type: () => LoginInput }) input: LoginInput, @Context('res') res: Response) {
+  //   return  this.service.login(input, res)  
+  // }
 
 
   @Mutation(() => UserToken)
