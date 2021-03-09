@@ -10,7 +10,7 @@ import * as bcryptjs from 'bcryptjs';
 export class AuthService {
     constructor(private readonly prisma: PrismaService, private readonly jwt: JwtService) {}
 
-    async validate(id: any): Promise<User> {
+    async validate(id: number): Promise<User> {
         const user = await this.prisma.user.findUnique({ 
             where: {
                 id: id,
