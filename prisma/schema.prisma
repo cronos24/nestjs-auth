@@ -11,47 +11,51 @@ generator client {
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String?  @unique
-  password String?
-  posts Post[]
+  id         Int          @id @default(autoincrement())
+  email      String?      @unique
+  password   String?
+  posts      Post[]
+  User_roles User_roles[]
 }
 
 model Roles {
-  id    Int     @default(autoincrement()) @id
-  name String?  @unique
+  id          Int           @id @default(autoincrement())
+  name        String?       @unique
   description String
-  state Int?
+  state       Int?
+  User_roles  User_roles[]
+  Rutas_roles Rutas_roles[]
 }
 
 model User_roles {
-    id  Int      @default(autoincrement()) @id
-    usuario    User?    @relation(fields: [userId], references: [id])
-    userId  Int?
-    perfil    Roles?    @relation(fields: [rolId], references: [id])
-    rolId  Int?
-    state Int?
+  id      Int    @id @default(autoincrement())
+  usuario User?  @relation(fields: [userId], references: [id])
+  userId  Int?
+  perfil  Roles? @relation(fields: [rolId], references: [id])
+  rolId   Int?
+  state   Int?
 }
 
-model Ruta{
-  id    Int     @default(autoincrement()) @id
-  ruta String?  @unique
-  state Int?
+model Ruta {
+  id          Int           @id @default(autoincrement())
+  ruta        String?       @unique
+  state       Int?
+  Rutas_roles Rutas_roles[]
 }
 
 model Rutas_roles {
-    id  Int      @default(autoincrement()) @id
-    rutas   Ruta?    @relation(fields: [rutaId], references: [id])
-    rutaId  Int?
-    perfil    Roles?    @relation(fields: [rolId], references: [id])
-    rolId  Int?
-    state Int?
+  id     Int    @id @default(autoincrement())
+  rutas  Ruta?  @relation(fields: [rutaId], references: [id])
+  rutaId Int?
+  perfil Roles? @relation(fields: [rolId], references: [id])
+  rolId  Int?
+  state  Int?
 }
 
 model Post {
-    id  Int      @default(autoincrement()) @id
-    title String?
-    body String
-    author    User?    @relation(fields: [authorId], references: [id])
-    authorId  Int?
+  id       Int     @id @default(autoincrement())
+  title    String?
+  body     String
+  author   User?   @relation(fields: [authorId], references: [id])
+  authorId Int?
 }

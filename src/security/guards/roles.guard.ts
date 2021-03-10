@@ -1,5 +1,4 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -8,14 +7,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector, private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   
 
   async canActivate(context: ExecutionContext): Promise<any> {
 
     const request = GqlExecutionContext.create(context).getContext().req;
-
     
     let user_id= request.user.id;
     let _class = context.getClass().name;
@@ -30,25 +28,25 @@ export class RolesGuard implements CanActivate {
         return false;
     }
 
-    for (var roll of roles) {
+        for (var roll of roles) {
         cont ++;
-        var rutasbyroll= await this.getRutasByRoll(roll.rolId);
+        var rutasbyroll= await this.getRutasByRoll(roll.rolId, final_route);
 
-        if (!rutasbyroll) {
-            return false;
-        }
+        if (rutasbyroll.length > 0) {
+            _authorization= true;
+                break;  
+        }        
         
-        
-        for (const _rutas of rutasbyroll) {
-            if (_rutas.rutas.ruta === final_route) {
-                _authorization= true;
-                break;               
-            }
-          }
+        // for (const _rutas of rutasbyroll) {
+        //     if (_rutas.rutas.ruta === final_route) {
+        //         _authorization= true;
+        //         break;               
+        //     }
+        //   }
 
-        if (_authorization==true) {
-            break;
-        }
+        // if (_authorization==true) {
+        //     break;
+        // }
           
     }    
 
@@ -71,14 +69,17 @@ export class RolesGuard implements CanActivate {
     }
 
 
-    async getRutasByRoll(id: any): Promise<any> {
+    async getRutasByRoll(id: number, final_route: any): Promise<any> {
         const rutas= await this.prisma.rutas_roles.findMany({ 
             where: {
                 rolId: id,
-                state: 1
+                state: 1,
+                rutas: {
+                  ruta: final_route,
+                },
               },
               select: {
-                rutas: {
+                rutas: {                  
                   select: {
                     ruta: true,
                   },
