@@ -1,93 +1,80 @@
-type User {
-  id: ID!
-  email: String!
-  post: [Post!]!
+type AuthUser {
+  user_id: ID!
+  user_email: String!
+  post: [GeTpost!]!
+  role: AuthRole
 }
 
-type Roles {
-  id: ID!
-  name: String!
-  description: String
-  state: Int!
+type AuthRole {
+  role_id: ID!
+  role_name: String!
+  role_description: String
+  role_state: Int!
 }
 
-type UserRoles {
-  id: ID!
-  usuario: User!
-  perfil: Roles!
-  state: Int!
+type AuthPermissions {
+  permissions_id: ID!
+  permissions_name: String!
+  permissions_state: Int!
 }
 
-type Ruta {
-  id: ID!
-  ruta: String!
-  state: Int!
+type AuthRolpermissions {
+  rolpermissions_id: ID!
+  permissions: AuthPermissions!
+  role: AuthRole!
+  rolpermissions_state: Int!
 }
 
-type RutasRoles {
-  id: ID!
-  rutas: Ruta!
-  perfil: Roles!
-  state: Int!
-}
-
-type Post {
-  id: ID!
-  title: String!
-  body: String
-  author: User
+type GeTpost {
+  post_id: ID!
+  post_title: String!
+  post_body: String
+  user: AuthUser
 }
 
 input SignUpInput {
-  email: String!
-  password: String!
+  user_email: String!
+  user_password: String!
 }
 
 input LoginInput {
-  email: String!
-  password: String!
+  user_email: String!
+  user_password: String!
 }
 
 input PostInput {
-  title: String!
-  body: String!
-  authorEmail: String!
+  post_title: String!
+  post_body: String!
+  user_id: Int!
 }
 
-input RolInput {
-  name: String!
-  description: String!
-  state: Int!
-}
-
-input UserRolInput {
-  authorEmail: String!
-  rolName: String!
-  state: Int!
+input RoleInput {
+  role_name: String!
+  role_description: String!
 }
 
 type AuthPayload {
-  id: ID!
-  email: String!
+  user_id: ID!
+  user_email: String!
 }
 
 type UserToken {
   token: String!
-  user: User!
+  user: AuthUser!
 }
 
 type PostModel {
-  post: Post!
+  post: GeTpost!
 }
 
 type Query {
-  post(id: ID!): Post!
-  posts: [Post!]!
+  post(id: ID!): GeTpost!
+  posts: [GeTpost!]!
 }
 
 type Mutation {
   signup(input: SignUpInput): UserToken!
   login(input: LoginInput): UserToken!
-  createPost(input: PostInput): Post!
-  createRol(input: RolInput): Roles!
+  createPost(input: PostInput): GeTpost!
+  createRol(input: RoleInput): AuthRole!
 }

@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql'
-import { User } from '@prisma/client';
+import { AuthUser } from '@prisma/client';
 
 @ObjectType()
 export class UserToken {
@@ -7,5 +7,6 @@ export class UserToken {
   token: string
 
   @Field()
-  user: User
+  //user: aut_user
+  user: AuthUser
 }

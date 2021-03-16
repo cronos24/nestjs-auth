@@ -57,12 +57,13 @@ export class RolesGuard implements CanActivate {
   }
 
     async getRolesByUser(id: any): Promise<any> {
-        const roles= await this.prisma.user_roles.findMany({ 
+        const roles= await this.prisma.authUser.findMany({ 
             where: {
-                userId: id,
-                state: 1
+                user_id: id
             },
-        });       
+        });   
+        
+        console.log('roles', roles);
         
         return roles;    
 
@@ -70,18 +71,18 @@ export class RolesGuard implements CanActivate {
 
 
     async getRutasByRoll(id: number, final_route: any): Promise<any> {
-        const rutas= await this.prisma.rutas_roles.findMany({ 
+        const rutas= await this.prisma.authRolpermissions.findMany({ 
             where: {
-                rolId: id,
-                state: 1,
-                rutas: {
-                  ruta: final_route,
+                role_id: id,
+                rolpermissions_state: 1,
+                auth_permissions: {
+                  permissions_name: final_route,
                 },
               },
               select: {
-                rutas: {                  
+                auth_permissions: {                  
                   select: {
-                    ruta: true,
+                    permissions_name: true,
                   },
                 },
               },        

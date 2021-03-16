@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 import { Request } from 'express';
 import { AuthService } from '../auth.service';
-import { User } from '@prisma/client';
+import { AuthUser } from '@prisma/client';
 
 const cookieExtractor = (req: Request): string | null => {
   let token = null;
@@ -22,8 +22,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload): Promise<User> {
-    const user = await this.authService.validate(payload.id);
+  async validate(payload): Promise<AuthUser> {
+    const user = await this.authService.validate(payload.user_id);
     if (!user) {
       throw new UnauthorizedException();
     }

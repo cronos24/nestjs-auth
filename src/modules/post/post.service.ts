@@ -11,13 +11,11 @@ export class PostService {
  
     public async create(input: PostInputDto, ctx): Promise<PostModel> {
 
-        return this.prisma.post.create({
+        return this.prisma.geTpost.create({
             data: {
-              title: input.title,
-              body: input.body,
-              author: {
-                connect: { email: input.authorEmail },
-              },
+                post_title: input.post_title,
+                post_body: input.post_body,
+                user_id: input.user_id                
             },
           })
     

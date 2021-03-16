@@ -1,6 +1,7 @@
+import { AuthUser } from '@prisma/client';
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma/client';
+
 import { PrismaService } from 'src/prisma/prisma.service';
 import { SignUpInputDto } from './dto/sign-up-input.dto';
 import { UserToken } from './models/user-token';
@@ -10,10 +11,10 @@ import * as bcryptjs from 'bcryptjs';
 export class AuthService {
     constructor(private readonly prisma: PrismaService, private readonly jwt: JwtService) {}
 
-    async validate(id: number): Promise<User> {
-        const user = await this.prisma.user.findUnique({ 
+    async validate(id: number): Promise<AuthUser> {
+        const user = await this.prisma.authUser.findUnique({ 
             where: {
-                id: id,
+                user_id: id,
               },
          });
         if (!user) {
@@ -29,9 +30,9 @@ export class AuthService {
 
     public async login(input: SignUpInputDto, res): Promise<UserToken> {
 
-        const found = await this.prisma.user.findUnique({ 
+        const found = await this.prisma.authUser.findUnique({ 
             where: {
-                email: input.email,
+                user_email: input.user_email,
               },
          });
          
@@ -40,13 +41,13 @@ export class AuthService {
           throw new NotFoundException('Email or password incorrect');
         }
     
-        const passwordValid = await bcryptjs.compare(input.password, found.password);
+        const passwordValid = await bcryptjs.compare(input.user_password, found.user_password);
     
         if (!passwordValid) {
             throw new NotFoundException('Email or password incorrect');
         }
 
-        const jwt = this.jwt.sign({ id: found.id });
+        const jwt = this.jwt.sign({ id: found.user_id });
         res.cookie('token', jwt, { httpOnly: true });
     
         return { user: found, token: jwt }
@@ -54,31 +55,32 @@ export class AuthService {
 
     public async register(input: SignUpInputDto, res): Promise<UserToken> {
 
-    const found = await this.prisma.user.findUnique({ 
+    const found = await this.prisma.authUser.findUnique({ 
         where: {
-            email: input.email,
+            user_email: input.user_email,
           },
      });
 
     if (found) {
-      throw new BadRequestException(`Cannot register with email ${input.email}`)
+      throw new BadRequestException(`Cannot register with email ${input.user_email}`)
     }
 
-    const password = await bcryptjs.hash(input.password, 10);
+    const password = await bcryptjs.hash(input.user_password, 10);
 
 
-    const created =  await  this.prisma.user.create({
+    const created =  await  this.prisma.authUser.create({
         data: {
-            ...input, password
+          user_email: input.user_email,
+          user_password: password
         },
       })
 
-      const jwt = this.jwt.sign({ id: created.id });
+      const jwt = this.jwt.sign({ id: created.user_id });
       res.cookie('token', jwt, { httpOnly: true });
   
       return { user: created, token: jwt }  
      
-  }
+     }
 
     
 }

@@ -1,61 +1,50 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+model AuthPermissions {
+  permissions_id      Int                  @id @default(autoincrement())
+  permissions_name    String?              @unique
+  permissions_state   Int?
+  auth_rolpermissions AuthRolpermissions[]
 }
 
-model User {
-  id         Int          @id @default(autoincrement())
-  email      String?      @unique
-  password   String?
-  posts      Post[]
-  User_roles User_roles[]
+model AuthRole {
+  role_id             Int                  @id @default(autoincrement())
+  role_name           String?              @unique
+  role_description    String
+  role_state          Int?
+  auth_rolpermissions AuthRolpermissions[]
+  auth_user           AuthUser[]
 }
 
-model Roles {
-  id          Int           @id @default(autoincrement())
-  name        String?       @unique
-  description String
-  state       Int?
-  User_roles  User_roles[]
-  Rutas_roles Rutas_roles[]
+model AuthRolpermissions {
+  rolpermissions_id    Int              @id @default(autoincrement())
+  permissions_id       Int?
+  role_id              Int?
+  rolpermissions_state Int?
+  auth_permissions     AuthPermissions? @relation(fields: [permissions_id], references: [permissions_id])
+  auth_role            AuthRole?        @relation(fields: [role_id], references: [role_id])
 }
 
-model User_roles {
-  id      Int    @id @default(autoincrement())
-  usuario User?  @relation(fields: [userId], references: [id])
-  userId  Int?
-  perfil  Roles? @relation(fields: [rolId], references: [id])
-  rolId   Int?
-  state   Int?
+model AuthUser {
+  user_id       Int       @id @default(autoincrement())
+  user_email    String?   @unique
+  user_password String?
+  role_id       Int?
+  auth_role     AuthRole? @relation(fields: [role_id], references: [role_id])
+  ge_tpost      GeTpost[]
 }
 
-model Ruta {
-  id          Int           @id @default(autoincrement())
-  ruta        String?       @unique
-  state       Int?
-  Rutas_roles Rutas_roles[]
-}
-
-model Rutas_roles {
-  id     Int    @id @default(autoincrement())
-  rutas  Ruta?  @relation(fields: [rutaId], references: [id])
-  rutaId Int?
-  perfil Roles? @relation(fields: [rolId], references: [id])
-  rolId  Int?
-  state  Int?
-}
-
-model Post {
-  id       Int     @id @default(autoincrement())
-  title    String?
-  body     String
-  author   User?   @relation(fields: [authorId], references: [id])
-  authorId Int?
+model GeTpost {
+  post_id    Int       @id @default(autoincrement())
+  post_title String?
+  post_body  String
+  user_id    Int?
+  auth_user  AuthUser? @relation(fields: [user_id], references: [user_id])
 }
