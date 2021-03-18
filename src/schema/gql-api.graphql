@@ -32,6 +32,26 @@ type GeTpost {
   user: AuthUser
 }
 
+type Microservices {
+  id:            ID!
+  name:          String!
+  hostname:      String!              
+  port:          Int!
+  state:         Int!
+}
+
+input MicroservicesSend {
+  name: String!
+  query: String!
+}
+
+input MicroservicesInput {
+  name:          String!
+  hostname:      String!              
+  port:          Int!
+  state:         Int!
+}
+
 input SignUpInput {
   user_email: String!
   user_password: String!
@@ -63,6 +83,18 @@ type UserToken {
   user: AuthUser!
 }
 
+type MicroservicesResponse {
+  status: String!
+  response: String!
+}
+
+type MicroservicesRes {
+  name:          String!
+  hostname:      String!              
+  port:          Int!
+  state:         Int!
+}
+
 type PostModel {
   post: GeTpost!
 }
@@ -73,8 +105,10 @@ type Query {
 }
 
 type Mutation {
+  useMicroservice(input: MicroservicesSend): MicroservicesResponse!
   signup(input: SignUpInput): UserToken!
   login(input: LoginInput): UserToken!
   createPost(input: PostInput): GeTpost!
   createRol(input: RoleInput): AuthRole!
+  createMicroservice(input: MicroservicesInput): MicroservicesRes
 }

@@ -6,6 +6,18 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export class MicroservicesSend {
+    name: string;
+    query: string;
+}
+
+export class MicroservicesInput {
+    name: string;
+    hostname: string;
+    port: number;
+    state: number;
+}
+
 export class SignUpInput {
     user_email: string;
     user_password: string;
@@ -61,6 +73,14 @@ export class GeTpost {
     user?: AuthUser;
 }
 
+export class Microservices {
+    id: string;
+    name: string;
+    hostname: string;
+    port: number;
+    state: number;
+}
+
 export class AuthPayload {
     user_id: string;
     user_email: string;
@@ -69,6 +89,18 @@ export class AuthPayload {
 export class UserToken {
     token: string;
     user: AuthUser;
+}
+
+export class MicroservicesResponse {
+    status: string;
+    response: string;
+}
+
+export class MicroservicesRes {
+    name: string;
+    hostname: string;
+    port: number;
+    state: number;
 }
 
 export class PostModel {
@@ -82,6 +114,8 @@ export abstract class IQuery {
 }
 
 export abstract class IMutation {
+    abstract useMicroservice(input?: MicroservicesSend): MicroservicesResponse | Promise<MicroservicesResponse>;
+
     abstract signup(input?: SignUpInput): UserToken | Promise<UserToken>;
 
     abstract login(input?: LoginInput): UserToken | Promise<UserToken>;
@@ -89,4 +123,6 @@ export abstract class IMutation {
     abstract createPost(input?: PostInput): GeTpost | Promise<GeTpost>;
 
     abstract createRol(input?: RoleInput): AuthRole | Promise<AuthRole>;
+
+    abstract createMicroservice(input?: MicroservicesInput): MicroservicesRes | Promise<MicroservicesRes>;
 }
