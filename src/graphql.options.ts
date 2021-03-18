@@ -1,6 +1,7 @@
 import { GqlModuleOptions, GqlOptionsFactory } from '@nestjs/graphql';
 import { Injectable } from '@nestjs/common';
 import { join } from 'path';
+import GraphQLJSON from 'graphql-type-json';
 
 @Injectable()
 export class GraphqlOptions implements GqlOptionsFactory {
@@ -8,6 +9,7 @@ export class GraphqlOptions implements GqlOptionsFactory {
     return {
       context: ({ req, res }) => ({ req, res }),
       typePaths: ['./src/*/*.graphql'], // path for gql schema files
+      resolvers: { JSON: GraphQLJSON },
       installSubscriptionHandlers: true,
       resolverValidationOptions: {
         requireResolversForResolveType: false,

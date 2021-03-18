@@ -84,32 +84,26 @@ export class MicroservicesService {
             `;
 
 
+          let status= 'success';
+          let responseql= {}; 
 
+         try {
+            const result = await client.query({
+                query:QUERY,
+             });
+           
+             responseql= result.data
 
-          const result = await client.mutate({
-            mutation:QUERY,
-         });
+          } catch (err) {
+            status= 'fail';
+            responseql= (JSON.stringify(err));
+          }
 
-          console.log('json', result.data);
-          
 
      
-         return { status: 'success', response: result.data }
+         return { status: status, response: responseql }
   
-          
 
-    //     axios({
-    //         url: url,
-    //         method: 'post',
-    //         data: {
-    //           query: payload
-    //         }
-    //       }).then((result) => {
-    //         console.log(result.data)
-    //       });
-
-
-        console.log(found);
         
     
     }

@@ -1,3 +1,5 @@
+scalar JSON
+
 type AuthUser {
   user_id: ID!
   user_email: String!
@@ -85,7 +87,7 @@ type UserToken {
 
 type MicroservicesResponse {
   status: String!
-  response: String!
+  response: JSON!
 }
 
 type MicroservicesRes {

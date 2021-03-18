@@ -93,7 +93,7 @@ export class UserToken {
 
 export class MicroservicesResponse {
     status: string;
-    response: string;
+    response: JSON;
 }
 
 export class MicroservicesRes {
@@ -126,3 +126,5 @@ export abstract class IMutation {
 
     abstract createMicroservice(input?: MicroservicesInput): MicroservicesRes | Promise<MicroservicesRes>;
 }
+
+export type JSON = any;

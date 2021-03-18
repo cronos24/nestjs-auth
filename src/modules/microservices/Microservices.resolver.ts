@@ -21,7 +21,7 @@ export class MicroservicesResolver {
   }
 
   @Mutation()
-  //@UseGuards(GqlAuthGuard)  
+  @UseGuards(GqlAuthGuard)  
   useMicroservice(@Args({ name: 'input', type: () => MicroservicesSend}) input: MicroservicesSend, @Context() ctx) {
     return  this.service.use(input, ctx)  
   }
