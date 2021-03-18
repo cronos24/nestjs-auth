@@ -3,7 +3,7 @@ import { BadRequestException, HttpService, Injectable, NotFoundException } from 
 import { MicroservicesSend } from 'src/graphql.schema.generated';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { MicroservicesInputDto } from './dto/microservices.dto';
-import { MicroservicesModel } from './models/microservices-model';
+import { MicroservicesModel } from './models/Microservices-model';
 import fetcher from 'isomorphic-fetch';
 import { ApolloClient, gql, InMemoryCache } from 'apollo-boost';
 import { createHttpLink } from 'apollo-link-http';
